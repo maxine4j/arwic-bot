@@ -1,0 +1,6 @@
+Python library to download YouTube content and retrieve metadata
+
+https://github.com/mps-youtube/pafy
+
+This version of the library has been slightly modified.
+The ".temp" file extension added to downloading files was removed.

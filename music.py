@@ -76,22 +76,31 @@ async def cmd_join(client, message):
     try:
         # get arguments
         args = message.content.split()
+        # default to the messengers current channel
+        if len(args) == 1:
+            if message.author.voice.voice_channel is None:
+                await client.send_message(message.channel, "Usage: `!join <channel-name>`")
+                return
+            channel_name = message.author.voice.voice_channel.name
+        elif len(args) > 1:
+            channel_name = args[1]
+            
         # get the desired channel
-        channel = get_voice_channel_by_name(message.server, args[1])
+        channel = get_voice_channel_by_name(message.server, channel_name)
         if channel is None:
-            await client.send_message(message.channel, "Channel " + args[1] + " does not exist")    
+            await client.send_message(message.channel, "Channel " + channel_name + " does not exist")    
             return
         # try get the server's current voice client
         voice_client = client.voice_client_in(message.server)
         if voice_client is None:
             # if we dont have a client, make one by joining the specified channel
             await client.join_voice_channel(channel)
-            await client.send_message(message.channel, "Joined voice channel: " + args[1])    
+            await client.send_message(message.channel, "Joined voice channel: " + channel.name)    
             logger.info("Joined voice channel " + channel.id + " (server: " + message.server.id + ")")
         else:
             # if we do, then change the current client's channel
             await voice_client.move_to(channel)
-            await client.send_message(message.channel, "Moved to voice channel: " + args[1])    
+            await client.send_message(message.channel, "Moved to voice channel: " + channel.name)    
             logger.info("Moved to voice channel " + channel.id + " (server: " + message.server.id + ")")
     except Exception as e:
         logger.error("Error joining channel (server: " + message.server.id + "):", e)
