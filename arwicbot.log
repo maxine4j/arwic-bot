@@ -1,0 +1,101 @@
+2017-05-16 03:38:41 - INFO - Logged in as ArwicBot 313663820822216705
+2017-05-16 03:38:49 - INFO - Parsing message: Arwic (202130533713575936): !asdasd
+[2017-05-16 03:40:33,185] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 03:41:46,373] INFO [__main__.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 03:56:16,477] INFO [__main__.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 03:56:21,822] INFO [__main__.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 03:57:01,352] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 03:57:02,293] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 03:59:14,325] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 03:59:17,043] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 04:28:46,798] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 04:28:49,623] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 04:29:26,489] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 04:30:16,065] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 04:30:24,196] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 04:31:21,000] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 04:31:22,233] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 04:31:31,942] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 04:32:23,031] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 04:32:24,953] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 04:33:41,200] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 04:33:43,307] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 04:33:45,085] INFO [arwicbot.cmd_join:89] Joined voice channel 207797201232068609 (server: 207797201232068608)
+[2017-05-16 04:33:53,286] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 04:34:06,725] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=K6S4O-VtZBI
+[2017-05-16 04:34:51,617] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 04:34:54,011] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 04:34:55,317] INFO [arwicbot.cmd_join:89] Joined voice channel 207797201232068609 (server: 207797201232068608)
+[2017-05-16 04:34:59,391] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=K6S4O-VtZBI
+[2017-05-16 04:35:10,299] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 04:35:33,857] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 04:39:11,717] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 04:39:14,933] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 04:39:16,897] INFO [arwicbot.cmd_join:88] Joined voice channel 207797201232068609 (server: 207797201232068608)
+[2017-05-16 04:39:21,010] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=K6S4O-VtZBI
+[2017-05-16 04:39:29,890] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 04:39:46,673] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !pause
+[2017-05-16 05:20:56,138] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 05:21:12,638] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 05:21:14,352] INFO [arwicbot.cmd_join:109] Joined voice channel 207797201232068609 (server: 207797201232068608)
+[2017-05-16 05:21:18,666] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=K6S4O-VtZBI
+[2017-05-16 05:21:29,697] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 05:29:28,285] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 05:29:29,519] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 05:29:31,242] INFO [arwicbot.cmd_join:90] Joined voice channel 207797201232068609 (server: 207797201232068608)
+[2017-05-16 05:29:36,993] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=K6S4O-VtZBI
+[2017-05-16 05:29:47,469] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 05:30:12,168] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 05:30:14,707] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 05:30:17,505] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=K6S4O-VtZBI
+[2017-05-16 05:30:20,543] INFO [arwicbot.cmd_join:90] Joined voice channel 207797201232068609 (server: 207797201232068608)
+[2017-05-16 05:30:23,848] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 05:35:16,389] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 05:35:17,409] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 05:35:19,138] INFO [arwicbot.cmd_join:90] Joined voice channel 207797201232068609 (server: 207797201232068608)
+[2017-05-16 05:35:22,487] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=K6S4O-VtZBI
+[2017-05-16 05:35:25,056] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 05:35:46,262] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !asdasd
+[2017-05-16 05:35:48,777] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !red
+[2017-05-16 05:35:52,065] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !stop
+[2017-05-16 05:36:08,061] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !stop
+[2017-05-16 05:36:23,990] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !leave
+[2017-05-16 05:37:18,509] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 05:37:23,060] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 05:37:24,373] INFO [arwicbot.cmd_join:90] Joined voice channel 207797201232068609 (server: 207797201232068608)
+[2017-05-16 05:37:28,051] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=K6S4O-VtZBI
+[2017-05-16 05:40:58,501] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 05:41:02,549] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 05:41:07,672] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !skip
+[2017-05-16 05:49:44,477] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 05:49:59,536] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 05:50:01,491] INFO [arwicbot.cmd_join:90] Joined voice channel 207797201232068609 (server: 207797201232068608)
+[2017-05-16 05:50:04,427] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=K6S4O-VtZBI
+[2017-05-16 05:50:26,346] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=-Du-CWASm20
+[2017-05-16 05:50:50,168] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=KCy7lLQwToI
+[2017-05-16 05:50:57,851] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=bXsmGSnq3lE
+[2017-05-16 05:51:12,512] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 05:51:26,483] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !pause
+[2017-05-16 05:51:31,925] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 05:51:35,826] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !stop
+[2017-05-16 05:51:42,584] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !skip
+[2017-05-16 05:51:47,653] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !skip
+[2017-05-16 05:52:11,335] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !skip
+[2017-05-16 05:53:26,925] INFO [arwicbot.on_ready:42] Logged in as ArwicBot 313663820822216705
+[2017-05-16 05:53:30,567] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !join general
+[2017-05-16 05:53:32,301] INFO [arwicbot.cmd_join:90] Joined voice channel 207797201232068609 (server: 207797201232068608)
+[2017-05-16 05:53:44,289] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=K6S4O-VtZBI
+[2017-05-16 05:53:54,377] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=-Du-CWASm20
+[2017-05-16 05:53:55,362] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=KCy7lLQwToI
+[2017-05-16 05:54:05,875] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=bXsmGSnq3lE
+[2017-05-16 05:54:14,178] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !queue_song https://www.youtube.com/watch?v=-Du-CWASm20
+[2017-05-16 05:54:19,857] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 05:54:30,479] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !asdasd
+[2017-05-16 05:54:37,453] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !pause
+[2017-05-16 05:54:41,940] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 05:54:46,210] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !stop
+[2017-05-16 05:54:53,451] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !play
+[2017-05-16 05:55:03,173] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !skip
+[2017-05-16 05:55:08,217] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !skip
+[2017-05-16 05:55:15,569] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !skip
+[2017-05-16 05:55:20,348] INFO [arwicbot.on_message:53] Parsing message: Arwic (202130533713575936): !skip
