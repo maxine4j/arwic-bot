@@ -104,9 +104,9 @@ async def cmd_leave(client, message):
     '''
     if client.is_voice_connected(message.server):
         voice_client = client.voice_client_in(message.server)
-        voice_client.disconnect()
+        await voice_client.disconnect()
         logger.info("Left voice channel (server: " + message.server.id + ")")
-
+        await client.send_message(message.channel, "Left voice channel.")    
 
 
 async def cmd_play_file(client, message):

@@ -27,6 +27,13 @@ logger.addHandler(ch)
 logger.addHandler(fh)
 
 
+def check_perms(author):
+    for role in author.roles:
+        if role.name == "ArwicBot Commander":
+            return True
+    return False
+
+
 async def cmd_hello(client, message):
     '''
     Simple test command
@@ -49,6 +56,10 @@ async def on_message(message):
     '''
     # discard messages without our prefix
     if not message.content.startswith(prefix):
+        return
+    # check if the auther has the bot commander role
+    if not check_perms(message.author):
+        await client.send_message(message.channel, "You do not have the required role to issue commands.")
         return
     logger.info("Parsing message: " + message.author.name + " (" + message.author.id + "): " + message.content)
     # run commands
