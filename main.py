@@ -3,6 +3,7 @@ import asyncio
 import private
 import music
 import logging
+import permissions
 from pprint import pprint
 
 prefix = "!"
@@ -27,6 +28,11 @@ logger.addHandler(ch)
 logger.addHandler(fh)
 
 
+def log_info(message, s):
+    #logger.info("[User: {} ({}), Server: {} ({})] {}".format(message.author.name, message.author.id, message.server.name, message.server.id, s))
+    logger.info("[Server: {}, User: {}] {}".format(message.server.name, message.author.name, s))
+
+
 def check_perms(author):
     for role in author.roles:
         if role.name == "ArwicBot Commander":
@@ -38,7 +44,16 @@ async def cmd_hello(client, message):
     '''
     Simple test command
     '''
-    await client.send_message(message.channel, "world")
+    #await client.send_message(message.channel, "world")
+    em = discord.Embed(title='Now Playing:', description='Hello World realasd alsdlasldlasdllasld - Adam Smith asdasd !!? :)', colour=0xcd201f)
+    em.set_author(name='Youtube Music Bot', icon_url="https://www.youtube.com/yts/img/favicon_144-vflWmzoXw.png")
+    em.set_thumbnail(url="https://i.ytimg.com/vi/yfwvEt94-nc/hqdefault.jpg")
+    em.add_field(name="field1", value="value1", inline=False)
+    em.add_field(name="field2", value="value2", inline=False)
+    em.add_field(name="field3", value="value3", inline=False)
+    #em.set_image(url="https://i.ytimg.com/vi/yfwvEt94-nc/hqdefault.jpg")
+    await client.send_message(message.channel, embed=em)
+
 
 
 @client.event
@@ -61,26 +76,60 @@ async def on_message(message):
     if not check_perms(message.author):
         await client.send_message(message.channel, "You do not have the required role to issue commands.")
         return
-    logger.info("Parsing message: " + message.author.name + " (" + message.author.id + "): " + message.content)
+    log_info(message, "Parsing message: " + message.content)
+    server = message.server
+    user = message.author
     # run commands
     if message.content.startswith(prefix + "join"):
-        await music.cmd_join(client, message)
+        if permissions.has_permission(server, user, permissions.LEVEL_USER):
+            await music.cmd_join(client, message)
+        else:
+            await client.send_message(message.channel, "You require permission level {} to perform that action".format(permissions.LEVEL_USER))
     elif message.content.startswith(prefix + "leave"):
-        await music.cmd_leave(client, message)
-    elif message.content.startswith(prefix + "play_file"):
-        await music.cmd_play_file(client, message)
-    elif message.content.startswith(prefix + "queue_song"):
-        await music.cmd_queue_song(client, message)
+        if permissions.has_permission(server, user, permissions.LEVEL_USER):
+            await music.cmd_leave(client, message)
+        else:
+            await client.send_message(message.channel, "You require permission level {} to perform that action".format(permissions.LEVEL_USER))
+    elif message.content.startswith(prefix + "queue"):
+        if permissions.has_permission(server, user, permissions.LEVEL_USER):
+            await music.cmd_queue(client, message)
+        else:
+            await client.send_message(message.channel, "You require permission level {} to perform that action".format(permissions.LEVEL_USER))
     elif message.content.startswith(prefix + "play"):
-        await music.cmd_play(client, message)
+        if permissions.has_permission(server, user, permissions.LEVEL_USER):
+            await music.cmd_play(client, message)
+        else:
+            await client.send_message(message.channel, "You require permission level {} to perform that action".format(permissions.LEVEL_USER))
     elif message.content.startswith(prefix + "stop"):
-        await music.cmd_stop(client, message)
+        if permissions.has_permission(server, user, permissions.LEVEL_USER):
+            await music.cmd_stop(client, message)
+        else:
+            await client.send_message(message.channel, "You require permission level {} to perform that action".format(permissions.LEVEL_USER))
     elif message.content.startswith(prefix + "pause"):
-        await music.cmd_pause(client, message)
+        if permissions.has_permission(server, user, permissions.LEVEL_USER):
+            await music.cmd_pause(client, message)
+        else:
+            await client.send_message(message.channel, "You require permission level {} to perform that action".format(permissions.LEVEL_USER))
     elif message.content.startswith(prefix + "skip"):
-        await music.cmd_skip(client, message)
+        if permissions.has_permission(server, user, permissions.LEVEL_USER):
+            await music.cmd_skip(client, message)
+        else:
+            await client.send_message(message.channel, "You require permission level {} to perform that action".format(permissions.LEVEL_USER))
+    elif message.content.startswith(prefix + "get-level"):
+        if permissions.has_permission(server, user, permissions.LEVEL_EVERYONE):
+            await permissions.cmd_get_level(client, message)
+        else:
+            await client.send_message(message.channel, "You require permission level {} to perform that action".format(permissions.LEVEL_EVERYONE))
+    elif message.content.startswith(prefix + "set-level"):
+        if permissions.has_permission(server, user, permissions.LEVEL_MOD):
+            await permissions.cmd_set_level(client, message)
+        else:
+            await client.send_message(message.channel, "You require permission level {} to perform that action".format(permissions.LEVEL_MOD))
     elif message.content.startswith(prefix + "hello"):
-        await cmd_hello(client, message)
+        if permissions.has_permission(server, user, permissions.LEVEL_USER):
+            await cmd_hello(client, message)
+        else:
+            await client.send_message(message.channel, "You require permission level {} to perform that action".format(permissions.LEVEL_USER))
     else:
         await client.send_message(message.channel, "Unknown command")
 
