@@ -104,7 +104,6 @@ async def cmd_join(client, message):
             await client.join_voice_channel(channel)
             session = get_session(message.server)
             session.current_channel = channel
-            await client.send_message(message.channel, "Joined voice channel: {}".format(channel.name))
             log_info(message, "Joined voice channel {}".format(channel.name))
         else:
             # if we do, then change the current client's channel

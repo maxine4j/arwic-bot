@@ -3,5 +3,5 @@ __pycache__/*
 .idea/*
 *.mp3
 private.py
-arwicbot.log
+*.log
 *.db
