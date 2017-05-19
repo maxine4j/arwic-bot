@@ -15,4 +15,6 @@ class MemeModule(BaseModule):
 
 
     async def cmd_ok_hand(self, client, message):
-        await client.send_message(message.channel, "https://i.imgur.com/lmLc0Or.png")
+        em = discord.Embed()
+        em.set_image(url="https://i.imgur.com/lmLc0Or.png")
+        await client.send_message(message.channel, embed=em)
