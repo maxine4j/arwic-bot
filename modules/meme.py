@@ -1,8 +1,6 @@
 from modules._base_ import BaseModule, Command, get_perm_level, set_perm_level, InsufficientPrivilegesException
 import logging_helper
-import asyncio
 import discord
-import sqlite3
 import constants
 
 
