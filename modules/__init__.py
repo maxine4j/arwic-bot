@@ -17,7 +17,8 @@ for s in os.listdir(__name__):
 # enable modules here
 modules = [
     music.MusicModule(),
-    permissions.PermissionsModule()
+    permissions.PermissionsModule(),
+    meme.MemeModule()
 ]
 
 async def try_run_command(prefix, client, message):
