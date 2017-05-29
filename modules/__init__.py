@@ -18,7 +18,8 @@ for s in os.listdir(__name__):
 modules = [
     music.MusicModule(),
     permissions.PermissionsModule(),
-    meme.MemeModule()
+    meme.MemeModule(),
+    warcraft.WarcraftModule()
 ]
 
 async def try_run_command(prefix, client, message):

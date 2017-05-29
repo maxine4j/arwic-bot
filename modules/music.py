@@ -113,7 +113,10 @@ class MusicModule(BaseModule):
             await client.send_message(channel, "Music: Nothing playing")
             return
         # add embed
-        em = discord.Embed(title="Now Playing: {} ({})".format(title, time_format(length)), description=author, colour=constants.COLOR_YOUTUBE_RED)
+        em = discord.Embed(title="Now Playing: {} ({})".format(title, time_format(length)),
+                           description=author,
+                           colour=constants.COLOR_YOUTUBE_RED,
+                           url="https://www.youtube.com/watch?v={}".format(session.current_song_id))
         em.set_author(name="Youtube Music Bot", icon_url=constants.ICON_YOUTUBE)
         em.set_thumbnail(url=thumbnail)
         # add up next

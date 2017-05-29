@@ -8,7 +8,9 @@ LEVEL_USER = 1
 LEVEL_EVERYONE = 0
 
 COLOR_YOUTUBE_RED = 0xcd201f
+COLOR_WARCRAFTLOGS_GREY = 0x555555
 ICON_YOUTUBE = "https://www.youtube.com/yts/img/favicon_144-vflWmzoXw.png"
+ICON_WARCRAFTLOGS = "https://www.warcraftlogs.com/img/common/warcraft-logo.png"
 
 DOWNLOAD_DIR = "/tmp/arwicbot/"
 if not os.path.isdir(DOWNLOAD_DIR):
