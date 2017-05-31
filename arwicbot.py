@@ -1,5 +1,7 @@
 import discord
 import asyncio
+import sys
+import os
 import private
 import logging_helper
 import modules
@@ -38,12 +40,12 @@ async def on_message(message):
     except InsufficientPrivilegesException as ipe:
         await client.send_message(message.channel, "Permissions: {}".format(ipe.msg))
 
+
 def main():
     '''
     Entry point
     '''
     client.run(private.arwic_bot_token)
-
 
 if __name__ == "__main__":
     try:
