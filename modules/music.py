@@ -60,6 +60,7 @@ class MusicModule(BaseModule):
         super().register_command(Command("join", self.cmd_join, constants.LEVEL_USER))
         super().register_command(Command("leave", self.cmd_leave, constants.LEVEL_USER))
         super().register_command(Command("play", self.cmd_play, constants.LEVEL_USER))
+        super().register_command(Command("stop", self.cmd_stop, constants.LEVEL_USER))
         super().register_command(Command("pause", self.cmd_pause, constants.LEVEL_USER))
         super().register_command(Command("skip", self.cmd_skip, constants.LEVEL_USER))
         super().register_command(Command("queue", self.cmd_queue, constants.LEVEL_USER))
@@ -108,6 +109,10 @@ class MusicModule(BaseModule):
                 return None
             else:
                 return res[0], res[1], res[2], res[3]
+
+        if session.current_song_id is None:
+            await client.send_message(channel, "Music: Nothing playing")
+            return
         title, author, length, thumbnail = query_db(session.current_song_id)
         if title is None:
             await client.send_message(channel, "Music: Nothing playing")
@@ -160,16 +165,68 @@ class MusicModule(BaseModule):
         except Exception as e:
             self.logger.error(e)
             await client.send_message(message.channel, "Music: Internal Error")
-            pass
 
     async def cmd_skip(self, client, message):
-        pass
+        try:
+            # check if we are in a voice channel
+            if not client.is_voice_connected(message.server):
+                await client.send_message(message.channel, "Music: Error: Not in voice channel")
+                return
+            # stop the player
+            session = self.get_session(message.server)
+            try:
+                session.player.stop()
+                session.player = None
+                session.current_song_id = None
+            except:
+                pass
+            # play the next song in the queue
+            voice = client.voice_client_in(message.server)
+            try:
+                next_song_id = session.playlist.get(block=False)
+            except queue.Empty:
+                await client.send_message(message.channel, "Music: Error: Playlist empty. Add songs with `!queue <youtube-link>`")
+                return
+            session.player = voice.create_ffmpeg_player(constants.DOWNLOAD_DIR + next_song_id)
+            session.player.start()
+            session.current_song_id = next_song_id
+            await self.send_now_playing(client, message.channel, session)
+        except Exception as e:
+            self.logger.error(e)
+            await client.send_message(message.channel, "Music: Internal Error")
 
     async def cmd_stop(self, client, message):
-        pass
+        try:
+            session = self.get_session(message.server)
+            try:
+                session.player.stop()
+            except:
+                pass
+            session.player = None
+            session.current_song_id = None
+            await client.send_message(message.channel, "Music: Stopped Playback")
+        except Exception as e:
+            self.logger.error(e)
+            await client.send_message(message.channel, "Music: Internal Error")
 
     async def cmd_pause(self, client, message):
-        pass
+        try:
+            session = self.get_session(message.server)
+            try:
+                if session.player and session.player.is_playing():
+                    session.player.pause()
+                    await client.send_message(message.channel, "Music: Paused Playback")
+                    return
+                else:
+                    await client.send_message(message.channel, "Music: Nothing Playing")
+                    return
+            except:
+                pass
+            session.player = None
+            session.current_song_id = None
+        except Exception as e:
+            self.logger.error(e)
+            await client.send_message(message.channel, "Music: Internal Error")
 
     async def cmd_now_playing(self, client, message):
         session = self.get_session(message.server)
