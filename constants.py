@@ -1,4 +1,6 @@
 import os
+import subprocess
+
 
 LEVEL_DEV = 5
 LEVEL_OWNER = 4
@@ -25,3 +27,8 @@ LOG_DIR = "logs/"
 LOG_EXT = ".log"
 if not os.path.isdir(LOG_DIR):
     os.makedirs(LOG_DIR)
+
+# get current git commit
+CURRENT_COMMIT = subprocess.Popen('git log -n 1 --pretty=format:"%H"',
+                                  shell=True,
+                                  stdout=subprocess.PIPE).stdout.read()[:7].decode()

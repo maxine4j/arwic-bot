@@ -1,9 +1,9 @@
 import discord
 import asyncio
 import private
-import music
 import logging_helper
 import modules
+import constants
 from modules._base_ import InsufficientPrivilegesException
 
 
@@ -19,7 +19,7 @@ async def on_ready():
     Event fired when client logs in
     '''
     logger.info("Logged in as " + client.user.name+ " " + client.user.id)
-    game = discord.Game(name="World of Botcraft: Legion", url="https://google.com/", type=1)
+    game = discord.Game(name="ArwicBot: #{}".format(constants.CURRENT_COMMIT))
     await client.change_presence(game=game)
 
 
