@@ -53,6 +53,7 @@ def get_perm_level(server, user):
     
 def set_perm_level(server, target_user, level, current_user):
     current_user_level = get_perm_level(server, current_user)
+    target_user_level = get_perm_level(server, target_user)
     # dont let a user promote another user to their current level or above
     if level > current_user_level:
         raise InsufficientPrivilegesException("Desired level ({}) must be less than your level ({})".format(level, current_user_level))

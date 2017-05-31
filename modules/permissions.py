@@ -26,18 +26,13 @@ class PermissionsModule(BaseModule):
             level = int(args[2])
             # update the db
             try:
-                self.logger.debug("BEFORE SET PERM")
-                set_perm_level(message.server, message.author, level, message.author)
-                self.logger.debug("DONE")
-                self.logger.debug("BEFORE SEND MSG")
+                set_perm_level(message.server, target, level, message.author)
                 await client.send_message(message.channel, "Permissions: User {} now has permission level {}".format(target.nick, level))
-                self.logger.debug("DONE")
             except InsufficientPrivilegesException as ipe:
                 await client.send_message(message.channel, "Permissions: {}".format(ipe.msg))
         except Exception as e:
-            raise
             self.logger.error("Error setting user level (server: {}): {}".format(message.server.id, e))
-            await client.send_message(message.channel, "Usage: `!set-level <user-mention> <level>`\n"\
+            await client.send_message(message.channel, "Permissions: Usage: `!set-level <user-mention> <level>`\n"\
                                                        "Where level is {} (everyone), {} (user), {} (moderator), {} (admin)".format(
                                                        constants.LEVEL_EVERYONE, constants.LEVEL_USER, constants.LEVEL_MOD, constants.LEVEL_ADMIN))
 
