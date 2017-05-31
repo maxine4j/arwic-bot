@@ -30,11 +30,12 @@ class PermissionsModule(BaseModule):
                 set_perm_level(message.server, message.author, level, message.author)
                 self.logger.debug("DONE")
                 self.logger.debug("BEFORE SEND MSG")
-                await client.send_message(message.channel, "Permissions: User {} now has permission :binking: level ~~{}~~ ➜ {}".format(target.mention, level))
+                await client.send_message(message.channel, "Permissions: User {} now has permission level {}".format(target.nick, level))
                 self.logger.debug("DONE")
             except InsufficientPrivilegesException as ipe:
                 await client.send_message(message.channel, "Permissions: {}".format(ipe.msg))
         except Exception as e:
+            raise
             self.logger.error("Error setting user level (server: {}): {}".format(message.server.id, e))
             await client.send_message(message.channel, "Usage: `!set-level <user-mention> <level>`\n"\
                                                        "Where level is {} (everyone), {} (user), {} (moderator), {} (admin)".format(
