@@ -35,7 +35,8 @@ class AdminModule(BaseModule):
             role_conn.cursor().execute("INSERT INTO potential_roles VALUES (?, ?)", (server_id, role_id,))
             role_conn.commit()
             await client.send_message(message.channel, "Potential role added: {}".format(role_name))
-        except:
+        except Exception as e:
+            self.logger.error("Error adding potential role (server: {}): {}".format(message.server.id, e))
             await client.send_message(message.channel, "Admin: Error adding potential role")
 
     async def cmd_potential_remove(self, client, message):
@@ -49,7 +50,8 @@ class AdminModule(BaseModule):
             role_conn.cursor().execute("DELETE FROM potential_roles WHERE server_id=? AND role_id=?", (server_id, role_id,))
             role_conn.commit()
             await client.send_message(message.channel, "Potential role removed: {}".format(role_name))
-        except:
+        except Exception as e:
+            self.logger.error("Error removing potential role (server: {}): {}".format(message.server.id, e))
             await client.send_message(message.channel, "Admin: Error removing potential role")
 
     async def cmd_role_list(self, client, message):
@@ -65,8 +67,9 @@ class AdminModule(BaseModule):
                         final_message = final_message + server_role.name + "\n"
             final_message = final_message + "```"
             await client.send_message(message.channel, final_message)
-        except:
-            await client.send_message(message.channel, "Admin: Error removing potential role")
+        except Exception as e:
+            self.logger.error("Error listing potential roles (server: {}): {}".format(message.server.id, e))
+            await client.send_message(message.channel, "Admin: Error listing potential roles")
 
     async def cmd_role_add(self, client, message):
         try:
@@ -85,7 +88,8 @@ class AdminModule(BaseModule):
                 return
             await client.add_roles(message.author, role)
             await client.send_message(message.channel, "Admin: Role added: {}".format(role.name))
-        except:
+        except Exception as e:
+            self.logger.error("Error adding role to a user (server: {}): {}".format(message.server.id, e))
             await client.send_message(message.channel, "Admin: Error adding role")
 
     async def cmd_role_remove(self, client, message):
@@ -105,5 +109,6 @@ class AdminModule(BaseModule):
                 return
             await client.remove_roles(message.author, role)
             await client.send_message(message.channel, "Admin: Role removed: {}".format(role.name))
-        except:
+        except Exception as e:
+            self.logger.error("Error removing role from a user (server: {}): {}".format(message.server.id, e))
             await client.send_message(message.channel, "Admin: Error removing role")
