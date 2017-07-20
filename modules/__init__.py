@@ -19,7 +19,8 @@ modules = [
     music.MusicModule(),
     permissions.PermissionsModule(),
     meme.MemeModule(),
-    warcraft.WarcraftModule()
+    warcraft.WarcraftModule(),
+    admin.AdminModule()
 ]
 
 async def try_run_command(prefix, client, message):
