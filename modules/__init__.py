@@ -20,7 +20,8 @@ modules = [
     permissions.PermissionsModule(),
     meme.MemeModule(),
     warcraft.WarcraftModule(),
-    admin.AdminModule()
+    admin.AdminModule(),
+    embed.EmbedModule()
 ]
 
 async def try_run_command(prefix, client, message):
