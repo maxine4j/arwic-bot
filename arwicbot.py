@@ -35,8 +35,7 @@ async def on_message(message):
         return
     logger.info("[Server: {}, User: {}] Parsing message: {}".format(message.server.name, message.author.name, message.content))
     try:
-        if not await modules.try_run_command(prefix, client, message):
-            await client.send_message(message.channel, "Error: Unknown command: {}".format(message.content))
+        await modules.try_run_command(prefix, client, message)
     except InsufficientPrivilegesException as ipe:
         await client.send_message(message.channel, "Permissions: {}".format(ipe.msg))
 
