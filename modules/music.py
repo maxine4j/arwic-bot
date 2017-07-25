@@ -12,7 +12,6 @@ import os
 import math
 
 
-
 def get_youtube_id(url):
     youtube_regex = (
         r'(https?://)?(www\.)?'

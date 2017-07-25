@@ -8,6 +8,7 @@ import modules
 import constants
 from modules._base_ import InsufficientPrivilegesException
 
+# invite link "https://discordapp.com/oauth2/authorize?client_id=313663820822216705&scope=bot&permissions=2146958591"
 
 
 prefix = "!"
