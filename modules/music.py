@@ -1,6 +1,5 @@
 from modules._base_ import BaseModule, Command
 import logging_helper
-import asyncio
 import discord
 import sqlite3
 import queue
@@ -10,23 +9,46 @@ import pafy
 import constants
 import os
 import math
+import urllib.request
+import urllib.parse
 
 
-def get_youtube_id(url):
-    youtube_regex = (
-        r'(https?://)?(www\.)?'
-        '(youtube|youtu|youtube-nocookie)\.(com|be)/'
-        '(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
-    youtube_regex_match = re.match(youtube_regex, url)
-    if youtube_regex_match:
-        return youtube_regex_match.group(6)
-    return youtube_regex_match
+def get_youtube_video_id(url):
+    exp = r'(\&|\?)v=(?P<id>[^\&])+'
+    m = re.match(exp, url)
+    if m:
+        return m.group("id")
+    return None
+
+
+def get_youtube_playlist_id(url):
+    # yt.com/watch?list=123456&arg2=asd
+    # yt.com/watch?v=12345&list=123456&arg2=asd
+    exp = r'(\&|\?)list=(?P<id>[^\&])+'
+    m = re.match(exp, url)
+    if m:
+        return m.group("id")
+    return None
     
 
 def time_format(length):
     secs = length % 60
     mins = math.floor(length / 60)
     return "{:0>2}:{:0>2}".format(mins, secs)
+
+
+def get_voice_channel_by_name(server, name):
+    for c in server.channels:
+        if c.type == discord.ChannelType.voice and c.name.lower() == name.lower():
+            return c
+    return None
+
+
+def search_youtube(search_terms):
+    query_string = urllib.parse.urlencode({"search_query": search_terms})
+    html_content = urllib.request.urlopen("http://www.youtube.com/results?" + query_string)
+    search_results = re.findall(r'href=\"\/watch\?v=(.{11})', html_content.read().decode())
+    return search_results
 
 
 class MusicModule(BaseModule):
@@ -56,14 +78,23 @@ class MusicModule(BaseModule):
                 PRIMARY KEY (id));
         ''')
         self.db.commit()
+        # joins or moves to the users current voice channel
         super().register_command(Command("join", self.cmd_join, constants.LEVEL_USER))
+        # pauses the player and leaves voice
         super().register_command(Command("leave", self.cmd_leave, constants.LEVEL_USER))
+        # always: joins the users current channel
+        # no args and paused: starts playback
+        # link: queues video or all videos in playlist
+        # search terms: returns top 5 search results, subsequent "!play X" plays/queues the given result
         super().register_command(Command("play", self.cmd_play, constants.LEVEL_USER))
+        # stops playback, leaves voice, clears playlist
         super().register_command(Command("stop", self.cmd_stop, constants.LEVEL_USER))
+        # pauses playback
         super().register_command(Command("pause", self.cmd_pause, constants.LEVEL_USER))
+        # plays the next song in the playlist
         super().register_command(Command("skip", self.cmd_skip, constants.LEVEL_USER))
-        super().register_command(Command("queue", self.cmd_queue, constants.LEVEL_USER))
-        super().register_command(Command("now-playing", self.cmd_now_playing, constants.LEVEL_EVERYONE))
+        # prints song currently playing
+        super().register_command(Command("nowplaying", self.cmd_now_playing, constants.LEVEL_EVERYONE))
 
     def download_video(self, id):
         # check if the video has already been downloaded
@@ -96,7 +127,11 @@ class MusicModule(BaseModule):
         # make a new one if none exist for this server
         self.sessions[server.id] = MusicModule.MusicSession(server)
         return self.sessions[server.id]
-        
+
+    def queue_song(self, server, song_id):
+        session = self.get_session(server)
+        session.playlist.put(song_id)
+
     async def send_now_playing(self, client, channel, session):
         def query_db(song_id):
             cursor = self.db.cursor()
@@ -136,31 +171,69 @@ class MusicModule(BaseModule):
 
     async def cmd_play(self, client, message):
         try:
-            # check if we are in a voice channel
-            if not client.is_voice_connected(message.server):
-                await client.send_message(message.channel, "Music: Error: Not in voice channel")
-                return
-            # check if a song is already playing
+            args = message.content.split()
             session = self.get_session(message.server)
-            if session.current_song_id is not None and session.player.is_playing():
-                await client.send_message(message.channel, "Music: Error: Song already playing")
-                return
-            # check if we need to resume a song that was paused
-            if session.current_song_id is not None and not session.player.is_playing():
-                session.player.resume()
-                await self.send_now_playing(client, message.channel, session)
-                return
-            # play the next song in the queue
-            voice = client.voice_client_in(message.server)
-            try:
-                next_song_id = session.playlist.get(block=False)
-            except queue.Empty:
-                await client.send_message(message.channel, "Music: Error: Playlist empty. Add songs with `!queue <youtube-link>`")
-                return
-            session.player = voice.create_ffmpeg_player(constants.DOWNLOAD_DIR + next_song_id)
-            session.player.start()
-            session.current_song_id = next_song_id
-            await self.send_now_playing(client, message.channel, session)
+
+            # join the users current voice channel if we arnt already in one
+            if not client.is_voice_connected(message.server):
+                await client.join_voice_channel(message.author.voice.voice_channel)
+
+            # check if we should add a video or playlist to the server playlist
+            if session.player.is_playing() and len(args) == 2:
+                url = args[1]
+                playlist_id = get_youtube_playlist_id(url)
+                if playlist_id:
+                    pl = pafy.get_playlist(playlist_id)
+                    pl_len = len(pl)
+                    for vid in pl["items"]:
+                        video_id = vid["pafy"].id
+                        self.queue_song(message.server, video_id)
+                    await client.send_message(message.channel, "Music: Added {} song(s) to the server's "
+                                                               "playlist".format(pl_len))
+                else:
+                    video_id = get_youtube_video_id(url)
+                    if not video_id:
+                        await client.send_message(message.channel, "Music: Invalid YouTube link")
+                        return
+                    self.queue_song(message.server, video_id)
+                    await client.send_message(message.channel, "Music: Added song to the server's playlist")
+
+            # check if we need to either resume the player or play a new song
+            if not session.player.is_playing():
+                # is the player paused?
+                if session.current_song_id:
+                    session.player.resume()
+                    await self.send_now_playing(client, message.channel, session)
+                    return
+                # or do we need to get a new song from the list
+                else:
+                    voice = client.voice_client_in(message.server)
+                    try:
+                        next_song_id = session.playlist.get(block=False)
+                    except queue.Empty:
+                        await client.send_message(message.channel, "Music: Error: Playlist empty. "
+                                                                   "Add songs with `!play <youtube-link>` or "
+                                                                   "`!play <search-terms>")
+                        return
+                    session.player = voice.create_ffmpeg_player(constants.DOWNLOAD_DIR + next_song_id)
+                    session.player.start()
+                    session.current_song_id = next_song_id
+                    await self.send_now_playing(client, message.channel, session)
+
+            # check if the arguments are search terms
+            if len(args) >= 2:
+                vid_ids = search_youtube(args[1:])[:5]
+                msg = "Select a track with !play n:\n"
+                index = 1
+                for vid_id in vid_ids:
+                    vid = pafy.new(vid_id)
+                    name = vid.title
+                    author = vid.author
+                    duration = time_format(vid.length)
+                    msg = "{}{}: {} ({})\n".format(msg, index, name, duration)
+                    index += 1
+                await client.send_message(message.channel, msg)
+
         except Exception as e:
             self.logger.error(e)
             await client.send_message(message.channel, "Music: Internal Error")
@@ -266,6 +339,10 @@ class MusicModule(BaseModule):
 
     async def cmd_leave(self, client, message):
         try:
+            # try and pause the player before we leave voice
+            session = self.get_session(message.server)
+            if session.player and session.player.is_playing():
+                session.player.pause()
             # check if we are in a channel
             if not client.is_voice_connected(message.server):
                 await client.send_message(message.channel, "Music: Error: Not in a voice channel")
@@ -292,7 +369,7 @@ class MusicModule(BaseModule):
                 # format -> !queue link count
                 play_count = int(args[2])
             # check if the arg is a youtube link
-            youtube_id = get_youtube_id(args[1])
+            youtube_id = get_youtube_video_id(args[1])
             if youtube_id is None:
                 await client.send_message(message.channel, "Music: Error: Invalid link")
                 return
