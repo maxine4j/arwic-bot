@@ -11,6 +11,8 @@ import os
 import math
 import urllib.request
 import urllib.parse
+from bs4 import BeautifulSoup
+import requests
 
 
 def get_youtube_video_id(url):
@@ -46,9 +48,23 @@ def get_voice_channel_by_name(server, name):
 
 def search_youtube(search_terms):
     query_string = urllib.parse.urlencode({"search_query": search_terms})
-    html_content = urllib.request.urlopen("http://www.youtube.com/results?" + query_string)
-    search_results = re.findall(r'href=\"\/watch\?v=(.{11})', html_content.read().decode())
-    return search_results
+    results_page = requests.get("http://www.youtube.com/results?" + query_string)
+    soup = BeautifulSoup(results_page.content, 'html.parser')
+    atags = soup.select("li > div > div > div.yt-lockup-content > h3 > a")
+    timetags = soup.select("div.yt-lockup-thumbnail.contains-addto > a > div > span > span")
+    results = []
+    for i in range(0, len(atags)):
+        atag = atags[i]
+        title = atag.text
+        href = atag["href"]
+        vid_id = re.match(r'/watch\?v=(.{11})', href)
+        duration = timetags[i].text
+        results.append({
+            "title": title,
+            "id": vid_id,
+            "duration": duration
+        })
+    return results
 
 
 class MusicModule(BaseModule):
@@ -173,13 +189,14 @@ class MusicModule(BaseModule):
         try:
             args = message.content.split()
             session = self.get_session(message.server)
+            should_search = True
 
             # join the users current voice channel if we arnt already in one
             if not client.is_voice_connected(message.server):
                 await client.join_voice_channel(message.author.voice.voice_channel)
 
-            # check if we should add a video or playlist to the server playlist
-            if session.player.is_playing() and len(args) == 2:
+            # check if the arg is a youtube link
+            if len(args) == 2:
                 url = args[1]
                 playlist_id = get_youtube_playlist_id(url)
                 if playlist_id:
@@ -188,18 +205,18 @@ class MusicModule(BaseModule):
                     for vid in pl["items"]:
                         video_id = vid["pafy"].id
                         self.queue_song(message.server, video_id)
+                    should_search = False
                     await client.send_message(message.channel, "Music: Added {} song(s) to the server's "
                                                                "playlist".format(pl_len))
                 else:
                     video_id = get_youtube_video_id(url)
-                    if not video_id:
-                        await client.send_message(message.channel, "Music: Invalid YouTube link")
-                        return
-                    self.queue_song(message.server, video_id)
-                    await client.send_message(message.channel, "Music: Added song to the server's playlist")
+                    if video_id:
+                        self.queue_song(message.server, video_id)
+                        should_search = False
+                        await client.send_message(message.channel, "Music: Added song to the server's playlist")
 
             # check if we need to either resume the player or play a new song
-            if not session.player.is_playing():
+            if session.player and not session.player.is_playing():
                 # is the player paused?
                 if session.current_song_id:
                     session.player.resume()
@@ -221,18 +238,16 @@ class MusicModule(BaseModule):
                     await self.send_now_playing(client, message.channel, session)
 
             # check if the arguments are search terms
-            if len(args) >= 2:
-                vid_ids = search_youtube(args[1:])[:5]
+            if should_search:
+                search_query = message.content[len("!play "):]
+                message = await client.send_message(message.channel, "Searching YouTube for \"{}\"...".format(search_query))
+                results = search_youtube(search_query)
                 msg = "Select a track with !play n:\n"
                 index = 1
-                for vid_id in vid_ids:
-                    vid = pafy.new(vid_id)
-                    name = vid.title
-                    author = vid.author
-                    duration = time_format(vid.length)
-                    msg = "{}{}: {} ({})\n".format(msg, index, name, duration)
+                for result in results:
+                    msg = "{}{}: {} ({})\n".format(msg, index, result["title"], result["duration"])
                     index += 1
-                await client.send_message(message.channel, msg)
+                await client.edit_message(message, msg)
 
         except Exception as e:
             self.logger.error(e)
