@@ -1,0 +1,2 @@
+# ArwicBot
+Modular discord bot
